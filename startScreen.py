@@ -51,33 +51,30 @@ while running:
         if rect.collidepoint(mouse_pos): # checks if mouse is over settings button
             smenu = settings_menu.SettingsMenu(screen) # Create an instance of SettingsMenu, shorted to smenu
             in_settings = True
-            subsmenu = settings_menu.SubSettingsMenu(screen)
+            settings_draw = 0
             while in_settings:
                 for event in pygame.event.get():
                     selected_option = smenu.mouse_option_selector(event) or smenu.keyboard_option_selector(event)
-                    
                     if selected_option == "Graphics":
                         in_submenu = True
+                        settings_draw = 1
                         while in_submenu:
-                            
                             for event in pygame.event.get():
-                                sub_selected_option = subsmenu.mouse_option_selector(event)
-                                if sub_selected_option == "Back":
+                                selected_option = smenu.mouse_option_selector(event) or smenu.keyboard_option_selector(event)
+                                if selected_option == "Back":
+                                    settings_draw = 0
                                     in_submenu = False
-                            subsmenu.draw_graphics_submenu(res)
-                        
-                        
-
+                            smenu.draw(res, settings_draw)
+                    
                     elif selected_option == "Sound":
+                        settings_draw = 2
                         in_submenu = True
-                        pass
+
                         
-
                     elif selected_option == "Controls":
+                        settings_draw = 3
                         in_submenu = True
-                        pass
                 
-
                     elif selected_option == "Restart": # Restart the game/level (undecided)
                         smenu.restart_game()
                     elif selected_option == "Back": # Go back to main menu or current game
@@ -85,7 +82,7 @@ while running:
                     elif selected_option == "Exit Game" or event.type == pygame.QUIT: # Exit the game
                         running = False
                         in_settings = False
-                    smenu.draw(res)
+                    smenu.draw(res, settings_draw)
         elif button_rect.collidepoint(mouse_pos): # checks if mouse is over start button
             print("Start button clicked!")
             # Here you can add code to transition to the game screen

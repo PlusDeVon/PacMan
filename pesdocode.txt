@@ -1,0 +1,11 @@
+for settings:
+
+by adding all options (submenu options included), let the draw function only create text for X amount based on the "layer."
+for example, the first 6 options will be the first "layer" and draw will take an int input(zero in this case) to 
+decide what to start the text count and where to end. the next int input will be one and start the main list to all of the graphics
+options 
+
+
+
+
+for subsettings:
