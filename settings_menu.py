@@ -114,4 +114,5 @@ class SettingsMenu:
             if event.button == 1:  #left mouse button
                 return self.options[self.selected_option]
         return None
-    
+    def selector(self,event):
+        return self.mouse_option_selector(event) or self.keyboard_option_selector(event)

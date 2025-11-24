@@ -29,6 +29,17 @@ small_font = pygame.font.SysFont("Arial", 30)
 settings_button = small_font.render("Settings", True, (0, 0, 0)) # settings button
 settings_button_rect = settings_button.get_rect(topright=(res[0] -40,res[1] -580)) # position settings button at top right corner
 
+def screen_layer(menu_layer):# function for layers in settings
+    smenu = settings_menu.SettingsMenu(screen)
+    global settings_draw #so settings_draw can be updated outside function
+    while menu_layer:# while layer is true, stay in settings menu
+        for event in pygame.event.get():#checking for selector events
+            selected_option = smenu.selector(event)
+            if selected_option == "Back":# go back to previous menu
+                settings_draw = 0
+                menu_layer = False
+        smenu.draw(res, settings_draw)#update settings menu display
+
 running = True
 while running:
     screen.fill((0, 0, 0))  # Fill the screen with black
@@ -54,26 +65,22 @@ while running:
             settings_draw = 0
             while in_settings:
                 for event in pygame.event.get():
-                    selected_option = smenu.mouse_option_selector(event) or smenu.keyboard_option_selector(event)
+                    selected_option = smenu.selector(event)# input from mouse or keyboard to select option
                     if selected_option == "Graphics":
                         in_submenu = True
                         settings_draw = 1
-                        while in_submenu:
-                            for event in pygame.event.get():
-                                selected_option = smenu.mouse_option_selector(event) or smenu.keyboard_option_selector(event)
-                                if selected_option == "Back":
-                                    settings_draw = 0
-                                    in_submenu = False
-                            smenu.draw(res, settings_draw)
+                        screen_layer(in_submenu)#creates a new layer for graphics settings
                     
                     elif selected_option == "Sound":
                         settings_draw = 2
                         in_submenu = True
+                        screen_layer(in_submenu)#creates a new layer for sound settings
 
                         
                     elif selected_option == "Controls":
                         settings_draw = 3
                         in_submenu = True
+                        screen_layer(in_submenu)#creates a new layer for control settings
                 
                     elif selected_option == "Restart": # Restart the game/level (undecided)
                         smenu.restart_game()
