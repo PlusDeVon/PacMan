@@ -4,7 +4,7 @@ import settings_menu
 pygame.init()
 
 # Screen resolution
-res = (1200, 600)     
+res = (800, 600)
 screen = pygame.display.set_mode(res)
 pygame.display.set_caption("PacMan")
 
@@ -30,7 +30,7 @@ settings_button = small_font.render("Settings", True, (0, 0, 0)) # settings butt
 settings_button_rect = settings_button.get_rect(topright=(res[0] -40,res[1] -580)) # position settings button at top right corner
 
 def screen_layer(menu_layer):# function for layers in settings
-    smenu = settings_menu.SettingsMenu(screen)
+    global smenu
     global settings_draw #so settings_draw can be updated outside function
     while menu_layer:# while layer is true, stay in settings menu
         for event in pygame.event.get():#checking for selector events
@@ -38,6 +38,49 @@ def screen_layer(menu_layer):# function for layers in settings
             if selected_option == "Back":# go back to previous menu
                 settings_draw = 0
                 menu_layer = False
+
+            #Graphics settings options
+            elif selected_option == "Fullscreen/Windowed":
+                smenu.toggle_fullscreen()
+            elif selected_option == "Resolution":
+                res_true = True
+                settings_draw = 4
+                while res_true:
+                    for event in pygame.event.get():
+                        res_option = smenu.selector(event)
+                        if res_option == "Back":
+                            res_true = False
+                            settings_draw = 1
+                        elif res_option == "[3840,2160]":
+                            smenu.change_resolution(0)
+                        elif res_option == "[2560,1440]":
+                            smenu.change_resolution(1)
+                        elif res_option == "[1920,1080]":
+                            smenu.change_resolution(2)
+                        elif res_option == "[1280,780]":
+                            smenu.change_resolution(3)
+                        elif res_option == "[1080,480]":
+                            smenu.change_resolution(4)
+                        elif res_option == "[800,600]":
+                            smenu.change_resolution(5)
+                    smenu.draw(res, settings_draw)#update settings menu display
+
+            #Sound settings options
+            elif selected_option == "Master Volume":
+                pass
+            elif selected_option == "Music Volume":
+                pass
+            elif selected_option == "Sound Effects Volume":
+                pass
+            elif selected_option == "Mute/Unmute":
+                pass
+
+            #Control settings options
+            elif selected_option == "Rebind Keys":
+                pass
+
+
+
         smenu.draw(res, settings_draw)#update settings menu display
 
 running = True

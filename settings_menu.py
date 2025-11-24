@@ -15,7 +15,8 @@ class SettingsMenu:
         self.options = ["Graphics", "Sound", "Controls","Restart", "Back", "Exit Game", 
                         "Resolution", "Fullscreen/Windowed", "Back",
                         "Master Volume", "Music Volume", "Sound Effects Volume", "Mute/Unmute", "Back",
-                        "Rebind Keys", "Back"] # Number of things in each section (6,3,5,2)
+                        "Rebind Keys", "Back",
+                        "[3840,2160]","[2560,1440]","[1920,1080]","[1280,780]","[1080,480]","[800,600]", "Back"] # Number of things in each section (6,3,5,2,7)
         self.selected_option = 0 #defaults to first option
 
     def draw(self, res, settings_state=0):
@@ -30,19 +31,25 @@ class SettingsMenu:
             for index, option in enumerate(self.options[6:9], start=6): # Resolution, Fullscreen/Windowed, Back
                 color = (255, 255, 255) if index == self.selected_option else (100, 100, 100)
                 text = self.font.render(option, True, color)
-                self.screen.blit(text, (100, 100 + index * 40))
+                self.screen.blit(text, (100, 100 + (index-6) * 40))
             pygame.display.flip()
         elif settings_state == 2:
             for index, option in enumerate(self.options[9:14], start=9): # Master Volume, Music Volume, Sound Effects Volume, Mute/Unmute, Back
                 color = (255, 255, 255) if index == self.selected_option else (100, 100, 100)
                 text = self.font.render(option, True, color)
-                self.screen.blit(text, (100, 100 + (index - 8) * 40))
+                self.screen.blit(text, (100, 100 + (index - 9) * 40))
             pygame.display.flip()
         elif settings_state == 3:
             for index, option in enumerate(self.options[14:15], start=14): # Rebind Keys, Back
                 color = (255, 255, 255) if index == self.selected_option else (100, 100, 100)
                 text = self.font.render(option, True, color)
-                self.screen.blit(text, (100, 100 + (index - 13) * 40))
+                self.screen.blit(text, (100, 100 + (index - 14) * 40))
+        elif settings_state == 4:
+            for index,option in enumerate(self.options[16:23], start=16): # Resolution options
+                color = (255, 255, 255) if index == self.selected_option else (100, 100, 100)
+                text = self.font.render(option, True, color)
+                self.screen.blit(text, (100, 100 + (index - 16) * 40))
+
         pygame.display.flip()
 
 
@@ -75,10 +82,25 @@ class SettingsMenu:
                 pygame.mixer.music.set_volume(level)
             elif channel == 2:  # Sound effects unmute
                 pygame.mixer.Sound.set_volume(level)
+
+        #fullscreen/windowed
+    def toggle_fullscreen(self):
+        pygame.display.toggle_fullscreen()
     
+    #resolution change
+    def change_resolution(self, ratio):
+        global res
+        global screen
+        res_options = [[3840,2160],[2560,1440],[1920,1080],[1280,780],[1080,480],[800,600]] #Resolution options
+        #pygame.display.set_mode((res_options[ratio][1], res_options[ratio][0]))
+        res = (res_options[ratio][1], res_options[ratio][0])
+        screen = pygame.display.set_mode(res)
 
-
-
+    
+    #key bindings
+    def rebind_key(self, action, new_key): # placeholder
+        pass
+    
     #restart game
     def restart_game(self): # placeholder
         pass
@@ -102,7 +124,7 @@ class SettingsMenu:
                 option_y = 100 + index * 40
                 # determine the rendered text width so we can check horizontal proximity
                 text = self.options[index]
-                text_width, text_height = self.font.size("Exit Game") # use the largest option to get consistent width
+                text_width, text_height = self.font.size("Sound Effects Volume") # use the largest option to get consistent width
                 text_x = 100  # x position used in draw()
 
                 # vertical check (approx height of text)
