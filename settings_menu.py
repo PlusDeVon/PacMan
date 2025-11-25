@@ -21,35 +21,43 @@ class SettingsMenu:
 
     def draw(self, res, settings_state=0):
         self.screen.fill((0, 0, 0)) # Clear screen with black
-        if settings_state == 0:
-            for index, option in enumerate(self.options[0:6], start=0): # Graphics, Sound, Controls, Back, Exit Game
-                color = (255, 255, 255) if index == self.selected_option else (100, 100, 100)# Highlight selected option
-                text = self.font.render(option, True, color) # Render text
-                self.screen.blit(text, (100, 100 + index * 40)) # Draw text
-            pygame.display.flip()
-        elif settings_state == 1:
-            for index, option in enumerate(self.options[6:9], start=6): # Resolution, Fullscreen/Windowed, Back
-                color = (255, 255, 255) if index == self.selected_option else (100, 100, 100)
-                text = self.font.render(option, True, color)
-                self.screen.blit(text, (100, 100 + (index-6) * 40))
-            pygame.display.flip()
-        elif settings_state == 2:
-            for index, option in enumerate(self.options[9:14], start=9): # Master Volume, Music Volume, Sound Effects Volume, Mute/Unmute, Back
-                color = (255, 255, 255) if index == self.selected_option else (100, 100, 100)
-                text = self.font.render(option, True, color)
-                self.screen.blit(text, (100, 100 + (index - 9) * 40))
-            pygame.display.flip()
-        elif settings_state == 3:
-            for index, option in enumerate(self.options[14:15], start=14): # Rebind Keys, Back
-                color = (255, 255, 255) if index == self.selected_option else (100, 100, 100)
-                text = self.font.render(option, True, color)
-                self.screen.blit(text, (100, 100 + (index - 14) * 40))
-        elif settings_state == 4:
-            for index,option in enumerate(self.options[16:23], start=16): # Resolution options
-                color = (255, 255, 255) if index == self.selected_option else (100, 100, 100)
-                text = self.font.render(option, True, color)
-                self.screen.blit(text, (100, 100 + (index - 16) * 40))
+        temperary_options = [] # Placeholder for future use
+        start = 0
 
+        # Graphics, Sound, Controls, Restart, Back, Exit Game   
+        if settings_state == 0:
+            for index,option in enumerate(self.options[0:6],start):
+                temperary_options.append(option)
+
+        # Resolution, Fullscreen/Windowed, Back
+        elif settings_state == 1:
+            start = 6
+            for index,option in enumerate(self.options[6:9],start): 
+                temperary_options.append(option)
+
+        # Master Volume, Music Volume, Sound Effects Volume, Mute/Unmute, Back
+        elif settings_state == 2:
+            start = 9
+            for index, option in enumerate(self.options[9:14], start):
+                temperary_options.append(option)
+
+        # Rebind Keys, Back
+        elif settings_state == 3:
+            start = 14
+            for index, option in enumerate(self.options[14:15], start): 
+                temperary_options.append(option)
+                
+        # Resolution options
+        elif settings_state == 4:
+            start = 16
+            for index,option in enumerate(self.options[16:23], start=16): # Resolution options
+                temperary_options.append(option)
+
+        #Draw the options based on the current settings state
+        for index,option in enumerate(temperary_options):
+            color = (255, 255, 255) if index == self.selected_option else (100, 100, 100) # Highlight selected option
+            text = self.font.render(option, True, color)
+            self.screen.blit(text, (100, 100 + index * 40))
         pygame.display.flip()
 
 
